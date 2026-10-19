@@ -426,7 +426,7 @@ function setName(){
     return rpc("pw_login",{p_name:v,p_pass:pw}).then(function(pr){
       free();
       if(pr==="locked"){err.textContent="چند بار رمز را اشتباه زدی؛ ۵ دقیقه بعد دوباره امتحان کن.";return;}
-      if(pr==="short"){err.textContent="رمز باید حداقل ۴ کاراکتر باشد.";$("passIn").focus();return;}
+      if(pr==="short"){err.textContent="Password";$("passIn").focus();return;}
       if(pr!=="ok"&&pr!=="new"){err.textContent="رمز اشتباه است.";$("passIn").focus();$("passIn").select();return;}
       cloud("ذخیره شد ✓");done();
     });
