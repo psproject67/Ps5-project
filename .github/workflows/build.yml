@@ -3,6 +3,7 @@ on: [push, workflow_dispatch]
 jobs:
   desktop:
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
@@ -18,6 +19,10 @@ jobs:
       - name: Unzip
         if: runner.os != 'Windows'
         run: unzip -q ps5-app.zip
+      - name: Fix package.json
+        shell: bash
+        working-directory: ps5-app
+        run: node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));p.author={name:'PS5 Game Picker',email:'ps5@example.com'};p.homepage='https://github.com';fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
       - run: npm install
         working-directory: ps5-app
       - run: npx electron-builder --publish never
