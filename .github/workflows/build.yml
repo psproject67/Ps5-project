@@ -53,6 +53,16 @@ jobs:
         working-directory: ps5-app
       - run: npx cap add android && npx cap sync android
         working-directory: ps5-app
+      - name: Add Android permissions
+        working-directory: ps5-app/android/app/src/main
+        run: |
+          sed -i \
+            -e '/permission.INTERNET/a <uses-permission android:name="android.permission.CAMERA" />' \
+            -e '/permission.INTERNET/a <uses-permission android:name="android.permission.RECORD_AUDIO" />' \
+            -e '/permission.INTERNET/a <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />' \
+            -e '/permission.INTERNET/a <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />' \
+            AndroidManifest.xml
+          grep permission AndroidManifest.xml
       - run: chmod +x gradlew && ./gradlew assembleDebug
         working-directory: ps5-app/android
       - uses: actions/upload-artifact@v4
